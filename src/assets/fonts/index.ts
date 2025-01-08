@@ -1,0 +1,18 @@
+export const Fonts = {
+    K2D_Bold : 'K2D-Bold',
+    K2D_BoldItalic : 'K2D-BoldItalic',
+    K2D_ExtraBold : 'K2D-ExtraBold',
+    K2D_ExtraBoldItalic : 'K2D-ExtraBoldItalic',
+    K2D_ExtraLight : 'K2D-ExtraLight',
+    K2D_ExtraLightItalic : 'K2D-ExtraLightItalic',
+    K2D_Italic : 'K2D-Italic',
+    K2D_Light : 'K2D-Light',
+    K2D_LightItalic : 'K2D-LightItalic',
+    K2D_Medium : 'K2D-Medium',
+    K2D_MediumItalic : 'K2D-MediumItalic',
+    K2D_Regular : 'K2D-Regular',
+    K2D_SemiBold : 'K2D-SemiBold',
+    K2D_SemiBoldItalic : 'K2D-SemiBoldItalic',
+    K2D_Thin : 'K2D-Thin',
+    K2D_ThinItalic : 'K2D-ThinItalic',
+}
