@@ -5,5 +5,6 @@ export const Images = {
     swipe_arrow : require('./swipe_arrow.png'),
     slide2 : require('./slide2.png'),
     slide3 : require('./slide3.png'),
-    checkbox : require('./checkbox.png')
+    checkbox : require('./checkbox.png'),
+    headerBg : require('./header_bg.png')
 }
