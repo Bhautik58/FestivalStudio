@@ -18,7 +18,6 @@ interface CustomInputPropType {
   touched?: boolean;
   inputContainerStyle?: StyleProp<ViewStyle>;
   leftIcon?: React.ReactNode;
-  label?: string;
 }
 
 type CustomInputFieldProps = TextInputProps & CustomInputPropType;
@@ -28,7 +27,7 @@ const {
   inputStyle,
   heading,
   container,
-  inputLabelContainer,
+  inputIconContainer,
   errorTextStyle,
 } = styles;
 
@@ -49,17 +48,13 @@ const CustomInputField = (
     error,
     touched,
     leftIcon,
-    label,
   }: CustomInputFieldProps,
   ref: ForwardedRef<TextInput>
 ) => {
   return (
     <View style={[container, inputContainerStyle]}>
-      <View style={inputLabelContainer}>
-        {leftIcon}
-        <Text style={heading}>{label}</Text>
-      </View>
       <View style={inputViewStyle}>
+        <View style={inputIconContainer}>{leftIcon}</View>
         <TextInput
           autoCapitalize="none"
           multiline={multiline}

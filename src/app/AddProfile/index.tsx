@@ -1,22 +1,14 @@
 //Global imports
-import {
-  Pressable,
-  SafeAreaView,
-  StatusBar,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Image, StatusBar, Text, TouchableOpacity, View } from "react-native";
 
 //File imports
 import styles from "./styles";
-import { Sizes } from "../../utils";
 import {
   BussinessIcon,
-  LeftArrow,
+  EditPencil,
+  FsLogo,
   Location,
   PhoneIcon,
-  ProfileUser,
   SmsBox,
   Website,
 } from "../../assets";
@@ -38,6 +30,8 @@ const {
   addProfileBtn,
   addProfileText,
   skipBtnText,
+  editIconContainer,
+  selectedImageStyle,
 } = styles;
 
 const AddProfile = () => {
@@ -46,83 +40,91 @@ const AddProfile = () => {
     businessEmailRef,
     businessWebsiteRef,
     goToNextField,
-    handleBack,
     mobileNumRef,
     handleAddProfilePress,
     handleSkipPress,
+    onEditSelectionPress,
+    logoUri,
   } = useAddProfile();
   return (
     <View style={container}>
       <StatusBar barStyle={"light-content"} />
-      <SafeAreaView style={{ flex: 1 }}>
-        {/* Top Header */}
-        <HeaderBackground>
-          <View style={backArrowContainer}>
-            <Pressable hitSlop={Sizes._25} onPress={handleBack}>
-              <LeftArrow />
-            </Pressable>
-            <Text style={heading}>Add Profile</Text>
-          </View>
-        </HeaderBackground>
-        <KeyboardView scrollEnabled>
-          {/* Choose Bussiness logo */}
-          <View style={logoContainer}>
-            <ProfileUser style={userIconStyle} />
-          </View>
-          <Text style={updateLogoText}>Update your business logo</Text>
 
-          {/* User Info */}
-          <View style={infoInputContainer}>
-            <CustomInputField
-              leftIcon={<BussinessIcon />}
-              label="Business Name"
-              keyboardType="default"
-              returnKeyType="next"
-              onSubmitEditing={() => goToNextField(mobileNumRef)}
-            />
-            <CustomInputField
-              ref={mobileNumRef}
-              leftIcon={<PhoneIcon />}
-              label="Mobile Number"
-              keyboardType="number-pad"
-              returnKeyType="next"
-              onSubmitEditing={() => goToNextField(businessEmailRef)}
-            />
-            <CustomInputField
-              ref={businessEmailRef}
-              leftIcon={<SmsBox />}
-              label="Business Email"
-              keyboardType="email-address"
-              returnKeyType="next"
-              onSubmitEditing={() => goToNextField(businessWebsiteRef)}
-            />
-            <CustomInputField
-              ref={businessWebsiteRef}
-              leftIcon={<Website />}
-              label="Business Website"
-              returnKeyType="next"
-              onSubmitEditing={() => goToNextField(businessAddRef)}
-            />
-            <CustomInputField
-              ref={businessAddRef}
-              leftIcon={<Location />}
-              label="Business Address"
-              returnKeyType="done"
-            />
-          </View>
-
+      {/* Top Header */}
+      <HeaderBackground>
+        <View style={backArrowContainer}>
+          <Text style={heading}>Add Profile</Text>
+        </View>
+      </HeaderBackground>
+      <KeyboardView>
+        {/* Choose Bussiness logo */}
+        <View style={logoContainer}>
+          {logoUri ? (
+            <Image source={{ uri: logoUri }} style={selectedImageStyle} />
+          ) : (
+            <FsLogo style={userIconStyle} />
+          )}
           <TouchableOpacity
-            style={addProfileBtn}
             activeOpacity={0.7}
-            onPress={handleAddProfilePress}
+            style={editIconContainer}
+            onPress={onEditSelectionPress}
           >
-            <Text style={addProfileText}>Add Profile</Text>
+            <EditPencil />
           </TouchableOpacity>
-          <TouchableOpacity activeOpacity={0.7} onPress={handleSkipPress}>
-            <Text style={skipBtnText}>Skip</Text>
-          </TouchableOpacity>
-        </KeyboardView>
-      </SafeAreaView>
+        </View>
+        <Text style={updateLogoText}>Add your business detail</Text>
+
+        {/* User Info */}
+        <View style={infoInputContainer}>
+          <CustomInputField
+            leftIcon={<BussinessIcon />}
+            placeholder="Business Name"
+            keyboardType="default"
+            returnKeyType="next"
+            onSubmitEditing={() => goToNextField(mobileNumRef)}
+          />
+          <CustomInputField
+            ref={mobileNumRef}
+            leftIcon={<PhoneIcon />}
+            placeholder="Mobile Number"
+            keyboardType="number-pad"
+            returnKeyType="next"
+            onSubmitEditing={() => goToNextField(businessEmailRef)}
+          />
+          <CustomInputField
+            ref={businessEmailRef}
+            leftIcon={<SmsBox />}
+            placeholder="Business Email"
+            keyboardType="email-address"
+            returnKeyType="next"
+            onSubmitEditing={() => goToNextField(businessWebsiteRef)}
+          />
+          <CustomInputField
+            ref={businessWebsiteRef}
+            leftIcon={<Website />}
+            placeholder="Business Website"
+            returnKeyType="next"
+            onSubmitEditing={() => goToNextField(businessAddRef)}
+          />
+          <CustomInputField
+            ref={businessAddRef}
+            leftIcon={<Location />}
+            placeholder="Business Address"
+            returnKeyType="done"
+          />
+        </View>
+
+        <TouchableOpacity
+          style={addProfileBtn}
+          activeOpacity={0.7}
+          onPress={handleAddProfilePress}
+        >
+          <Text style={addProfileText}>Submit</Text>
+        </TouchableOpacity>
+        <TouchableOpacity activeOpacity={0.7} onPress={handleSkipPress}>
+          <Text style={skipBtnText}>Skip</Text>
+        </TouchableOpacity>
+      </KeyboardView>
     </View>
   );
 };

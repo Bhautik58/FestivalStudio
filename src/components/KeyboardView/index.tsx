@@ -3,7 +3,10 @@ import React from "react";
 import {
   KeyboardAwareScrollView,
   KeyboardAwareScrollViewProps,
-} from "@codler/react-native-keyboard-aware-scroll-view";
+} from "react-native-keyboard-aware-scroll-view";
+
+//File imports
+import { Sizes } from "../../utils";
 
 const scrollPersistTaps: Partial<KeyboardAwareScrollViewProps> = {
   keyboardShouldPersistTaps: "handled",
@@ -28,7 +31,7 @@ const KeyboardView = ({
     contentContainerStyle={contentContainerStyle}
     scrollEnabled={scrollEnabled}
     alwaysBounceVertical={false}
-    extraHeight={keyboardVerticalOffset}
+    extraHeight={keyboardVerticalOffset ?? Sizes._112}
   >
     {children}
   </KeyboardAwareScrollView>
