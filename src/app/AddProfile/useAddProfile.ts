@@ -20,7 +20,7 @@ const useAddProfile = () => {
   };
 
   const handleAddProfilePress = () => {
-    Alert.alert("Pending functionality");
+    router.replace('Drawer')
   };
 
   const handleSkipPress = () => {

@@ -6,5 +6,8 @@ export const Images = {
     slide2 : require('./slide2.png'),
     slide3 : require('./slide3.png'),
     checkbox : require('./checkbox.png'),
-    headerBg : require('./header_bg.png')
+    headerBg : require('./header_bg.png'),
+    post1 : require('./post1.png'),
+    post2 : require('./post2.png'),
+    homeBanner : require('./homeBanner.png')
 }

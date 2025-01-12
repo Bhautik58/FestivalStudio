@@ -1,6 +1,6 @@
 //Global imports
 import { useCallback, useRef, useState } from "react";
-import { Animated, FlatList, Image, ImageBackground, SafeAreaView, StatusBar, Text, Touchable, TouchableOpacity, View } from "react-native";
+import { Animated, FlatList, Image, ImageBackground, Platform, SafeAreaView, StatusBar, Text, Touchable, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import LinearGradient from "react-native-linear-gradient";
 import Modal from 'react-native-modal';
@@ -160,7 +160,10 @@ export default function Onboarding() {
             <Modal
                 style={{ justifyContent: 'flex-end', marginBottom: bottom > 0 ? bottom : Sizes._30 }}
                 isVisible={welcomeModalVisible}>
-                <BlurView intensity={20} style={modalView}>
+                <BlurView 
+                tint="dark"
+                experimentalBlurMethod="dimezisBlurView"
+                 intensity={Platform.OS === 'ios' ? 30: 70} style={modalView}>
                     <Text style={welcomeModalText}>{"Welcome \n Festival Studio"}</Text>
                     <View style={[rowView, checkBoxContainer]}>
                         <TouchableOpacity onPress={() => setCheckBoxEnabled(!checkBoxEnabled)} style={emptyCheckBox}>
