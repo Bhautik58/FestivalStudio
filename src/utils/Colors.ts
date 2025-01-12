@@ -6,4 +6,5 @@ export const Colors = {
   red: "#FE4130",
   primary20: "#2C2C2C",
   primary30: "#4F4F4F",
+  drawerBGColor : '#747474'
 };
