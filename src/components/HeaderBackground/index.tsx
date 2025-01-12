@@ -1,22 +1,31 @@
 //Global import
 import React, { FC, ReactNode } from "react";
-import FastImage from "react-native-fast-image";
+import { View } from "react-native";
+import LinearGradient from "react-native-linear-gradient";
 
 //File import
-import { Images } from "../../assets";
 import styles from "./styles";
 
 interface iHeaderBackground {
   children?: ReactNode;
 }
-const { container } = styles;
-export const HeaderBackground: FC<iHeaderBackground> = ({
-  children
-}) => {
+const { innerShadow, wrapper, content } = styles;
+export const HeaderBackground: FC<iHeaderBackground> = ({ children }) => {
   return (
-    <FastImage source={Images.headerBg} style={container}>
-      {children}
-    </FastImage>
+    <View style={wrapper}>
+      <LinearGradient
+        style={innerShadow}
+        colors={[
+          "rgba(0, 0, 0, 0.4)",
+          "rgba(0, 0, 0, 0.1)",
+          "rgba(0, 0, 0, 0.4)",
+        ]}
+        start={{ x: 0.5, y: 0 }}
+        end={{ x: 0.5, y: 1 }}
+      >
+        <View style={content}>{children} </View>
+      </LinearGradient>
+    </View>
   );
 };
 
