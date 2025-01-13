@@ -1,6 +1,7 @@
 //Global imports
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 //File imports
 import { Fonts } from "../assets";
@@ -26,11 +27,13 @@ export default function RootLayout() {
     [Fonts.K2D_ThinItalic]: require("../assets/fonts/K2D-ThinItalic.ttf"),
   });
   return (
-    <Stack screenOptions={{ headerShown: false }}>
-    <Stack.Screen name='index' />
-    <Stack.Screen name='Onboarding' />
-    <Stack.Screen name='AddProfile' />
-    <Stack.Screen name='Drawer' />
-</Stack>
+    <SafeAreaProvider>
+      <Stack screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="index" />
+        <Stack.Screen name="Onboarding" />
+        <Stack.Screen name="AddProfile" />
+        <Stack.Screen name="Drawer" />
+      </Stack>
+    </SafeAreaProvider>
   );
 }
