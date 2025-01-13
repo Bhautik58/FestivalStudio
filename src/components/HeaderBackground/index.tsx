@@ -2,15 +2,17 @@
 import React, { FC, ReactNode } from "react";
 import { View } from "react-native";
 import LinearGradient from "react-native-linear-gradient";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 //File import
-import styles from "./styles";
+import { styles } from "./styles";
 
 interface iHeaderBackground {
   children?: ReactNode;
 }
-const { innerShadow, wrapper, content } = styles;
 export const HeaderBackground: FC<iHeaderBackground> = ({ children }) => {
+  const { top } = useSafeAreaInsets();
+  const { innerShadow, wrapper, content } = styles(top);
   return (
     <View style={wrapper}>
       <LinearGradient

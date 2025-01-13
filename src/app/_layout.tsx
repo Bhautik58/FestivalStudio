@@ -1,6 +1,7 @@
 //Global imports
 import { useFonts } from "expo-font";
 import { Stack } from "expo-router";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 
 //File imports
 import { Fonts } from "../assets";
