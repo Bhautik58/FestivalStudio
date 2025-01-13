@@ -27,10 +27,10 @@ export default function RootLayout() {
   });
   return (
     <Stack screenOptions={{ headerShown: false }}>
-    <Stack.Screen name='index' />
-    <Stack.Screen name='Onboarding' />
-    <Stack.Screen name='AddProfile' />
-    <Stack.Screen name='Drawer' />
-</Stack>
+      <Stack.Screen name='index' />
+      <Stack.Screen name='Onboarding/index' />
+      <Stack.Screen name='AddProfile/index' />
+      <Stack.Screen name='Drawer' />
+    </Stack>
   );
 }

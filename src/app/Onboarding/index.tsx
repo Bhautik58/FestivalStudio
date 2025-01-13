@@ -164,7 +164,7 @@ export default function Onboarding() {
                 tint="dark"
                 experimentalBlurMethod="dimezisBlurView"
                  intensity={Platform.OS === 'ios' ? 30: 70} style={modalView}>
-                    <Text style={welcomeModalText}>{"Welcome \n Festival Studio"}</Text>
+                    <Text style={welcomeModalText}>{"Welcome\nFestival Studio"}</Text>
                     <View style={[rowView, checkBoxContainer]}>
                         <TouchableOpacity onPress={() => setCheckBoxEnabled(!checkBoxEnabled)} style={emptyCheckBox}>
                             {checkBoxEnabled && (

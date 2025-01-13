@@ -13,15 +13,15 @@ export default function DrawerLayout() {
         <GestureHandlerRootView style={{ flex: 1 }}>
             <Drawer
                 drawerContent={(props) => <CustomDrawer {...props} />}
-
                 screenOptions={{
                     headerShown: true,
                     drawerStyle: {
                         width: Sizes.FindSize(260),
                         backgroundColor: 'transparent',
-                        opacity : 0.7
+                        opacity : 0.9
                     },
                     swipeEnabled : false,
+                    drawerType:'front'
                 }}
             >
                 <Drawer.Screen name="HomeStack" options={{ title: "Home Drawer" }} />
