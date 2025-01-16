@@ -27,13 +27,11 @@ export default function RootLayout() {
     [Fonts.K2D_ThinItalic]: require("../assets/fonts/K2D-ThinItalic.ttf"),
   });
   return (
-    <SafeAreaProvider>
-      <Stack screenOptions={{ headerShown: false }}>
-        <Stack.Screen name="index" />
-        <Stack.Screen name="Onboarding" />
-        <Stack.Screen name="AddProfile" />
-        <Stack.Screen name="Drawer" />
-      </Stack>
-    </SafeAreaProvider>
+    <Stack screenOptions={{ headerShown: false }}>
+      <Stack.Screen name='index' />
+      <Stack.Screen name='Onboarding/index' />
+      <Stack.Screen name='AddProfile/index' />
+      <Stack.Screen name='Drawer' />
+    </Stack>
   );
 }

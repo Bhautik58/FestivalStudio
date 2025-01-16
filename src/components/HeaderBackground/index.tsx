@@ -25,7 +25,7 @@ export const HeaderBackground: FC<iHeaderBackground> = ({ children }) => {
         start={{ x: 0.5, y: 0 }}
         end={{ x: 0.5, y: 1 }}
       >
-        <View style={content}>{children} </View>
+        <View style={content}>{children}</View>
       </LinearGradient>
     </View>
   );

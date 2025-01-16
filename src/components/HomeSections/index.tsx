@@ -1,7 +1,7 @@
 //Global imports
 import { FlatList, ImageBackground, Text, TouchableOpacity, View } from "react-native"
 import { FC, memo } from "react";
-import { router } from "expo-router";
+import { useNavigation } from "expo-router";
 
 //File imports
 import styles from "./styles";
@@ -19,6 +19,7 @@ const { container, itemHeaderContainer, postContainer, postImage, sectionTitleTe
 const HomeSections: FC<iHomeSections> = (props) => {
 
     const { sectionTitle, data } = props;
+    const { navigate } = useNavigation<any>();
 
     //render list item of post
     const renderPostItems = ({ item }: any) => {
@@ -36,7 +37,7 @@ const HomeSections: FC<iHomeSections> = (props) => {
                     <Text style={sectionTitleText}>{sectionTitle}</Text>
                     <View style={underlineView}></View>
                 </View>
-                <TouchableOpacity onPress={() => router.navigate('Festivals/1')} style={seeAllContainer}>
+                <TouchableOpacity onPress={() => navigate('Festivals/[id]')} style={seeAllContainer}>
                     <Text style={seeAllText}>See All</Text>
                 </TouchableOpacity>
             </View>

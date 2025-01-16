@@ -1,27 +1,33 @@
 //Global imports
 import { Animated, FlatList, ImageBackground, ScrollView, SectionList, Text, TouchableOpacity, View } from "react-native";
-import { useRef, useState } from "react";
+import { useCallback, useRef, useState } from "react";
+import { router, useNavigation } from "expo-router";
 
 //File imports
 import styles from "./styles";
-import { HomeSections } from "../../../../components";
+import { HeaderBackground, HomeSections } from "../../../../components";
 import { UPCOMING_FESTIVALS } from "./home_data";
 import { Colors, Sizes } from "../../../../utils";
 import { Images } from "../../../../assets";
+import DrawerMenu from "../../../../assets/svgIcons/DrawerMenu";
+import Calendar from "../../../../assets/svgIcons/Calendar";
+import Search from "../../../../assets/svgIcons/Search";
 
-const { container, listVerticalGap, bannerStyle, rowView, dotStyle } = styles;
+const { container, listVerticalGap, bannerStyle, rowView, dotStyle, headerContainer,
+    row, headerTitle
+} = styles;
 
 export default function Home() {
-
+    const { toggleDrawer, navigate  } = useNavigation<any>();
     const myFlatList = useRef<FlatList | null>(null);
     const [scrollX, setScrollX] = useState(new Animated.Value(0));
     const [bannerData, setBannerData] = useState([{ key: '1' }, { key: '2' }, { key: '3' }]);
 
-    const renderBannerItem = ({ item }: any) => {
+    const renderBannerItem = useCallback(({ item }: any) => {
         return (
             <ImageBackground source={Images.homeBanner} resizeMode="cover" style={bannerStyle} imageStyle={{ borderRadius: Sizes._10 }} />
         )
-    }
+    },[])
 
     const PaginationDot = () => {
         const stepPosition = Animated.divide(scrollX, Sizes.width);
@@ -41,7 +47,7 @@ export default function Home() {
         )
     }
 
-    const Banner = () => {
+    const Banner = useCallback(() => {
         return (
             <View style={{ width: Sizes.width, alignSelf: 'center' }}>
                 <FlatList
@@ -64,10 +70,38 @@ export default function Home() {
                 <PaginationDot />
             </View>
         )
+    }, [])
+
+    const Header = () => {
+        return <HeaderBackground>
+            <View style={headerContainer}>
+                <View style={[row, { gap: Sizes._20 }]}>
+                    <TouchableOpacity hitSlop={15} onPress={() => toggleDrawer()}>
+                        <DrawerMenu />
+                    </TouchableOpacity>
+                    <Text style={headerTitle}>
+                        <Text style={{ color: Colors.pink }}>F</Text>
+                        estival
+                        <Text style={{ color: Colors.gold }}>{" "}S</Text>
+                        tudio</Text>
+                </View>
+
+                <View style={[row, { gap: Sizes._20 }]}>
+                    <TouchableOpacity onPress={() => navigate('Calendar/index')} hitSlop={12}>
+                        <Calendar />
+                    </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigate('Search/index')} hitSlop={12}>
+                        <Search />
+                    </TouchableOpacity>
+                </View>
+            </View>
+        </HeaderBackground>
     }
 
     return (
         <View style={container}>
+            <Header />
+
             <ScrollView
                 contentContainerStyle={{ paddingVertical: Sizes._20 }}
                 nestedScrollEnabled>
