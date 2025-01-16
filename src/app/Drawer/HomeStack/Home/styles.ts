@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 
 //File imports
 import { Colors, Sizes } from "../../../../utils";
+import { Fonts } from "../../../../assets";
 
 export default StyleSheet.create({
     container :{ flex: 1, backgroundColor : Colors.black_22 },
@@ -25,4 +26,20 @@ export default StyleSheet.create({
         alignSelf: 'center',
         marginTop: Sizes._12
     },
+    headerContainer:{
+        width: '100%',
+        paddingHorizontal: Sizes._22,
+        flexDirection : 'row',
+        alignItems:'center',
+        justifyContent:'space-between'
+    },
+    row:{
+        flexDirection : 'row',
+        alignItems:'center'
+    },
+    headerTitle:{
+        fontFamily: Fonts.K2D_Bold,
+        fontSize: Sizes._18,
+        color : Colors.white
+    }
 })

@@ -5,8 +5,11 @@ import { Platform, StyleSheet } from "react-native";
 import { Colors, Sizes } from "../../utils";
 
 export const styles = (top: number) => {
+
+  const NOTCH_HEIGHT = top > 0 ? 45 : top;
+
   const CON_HEIGHT =
-    Platform.OS === "ios" ? Sizes.FindSize(50 + top) : Sizes._50;
+    Platform.OS === "ios" ? Sizes.FindSize(50 + NOTCH_HEIGHT) : Sizes._50;
 
   return StyleSheet.create({
     wrapper: {
@@ -16,9 +19,10 @@ export const styles = (top: number) => {
     },
     innerShadow: {
       flex: 1,
+      justifyContent:'flex-end',
+      paddingTop: NOTCH_HEIGHT,
     },
     content: {
-      marginTop: Platform.OS === "ios" ? Sizes.FindSize(top) : 0,
       height: Sizes._50,
       alignItems: "center",
       justifyContent: "center",

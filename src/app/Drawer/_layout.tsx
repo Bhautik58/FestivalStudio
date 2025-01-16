@@ -14,11 +14,11 @@ export default function DrawerLayout() {
             <Drawer
                 drawerContent={(props) => <CustomDrawer {...props} />}
                 screenOptions={{
-                    headerShown: true,
+                    headerShown: false,
                     drawerStyle: {
                         width: Sizes.FindSize(260),
                         backgroundColor: 'transparent',
-                        opacity : 0.9
+                        opacity : 0.95
                     },
                     swipeEnabled : false,
                     drawerType:'front'
