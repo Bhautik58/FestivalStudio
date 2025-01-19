@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "139325637268",
+    "project_id": "festival-studio-b5277",
+    "storage_bucket": "festival-studio-b5277.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:139325637268:android:f0f4698287e901b44baa81",
+        "android_client_info": {
+          "package_name": "com.anonymous.FestivalStudio"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBF-iEp_1gAawGDIkL4FsS39PPAljt7Qd0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -20,7 +20,7 @@ export const styles = (top: number) => {
     innerShadow: {
       flex: 1,
       justifyContent:'flex-end',
-      paddingTop: NOTCH_HEIGHT,
+      // paddingTop: NOTCH_HEIGHT,
     },
     content: {
       height: Sizes._50,

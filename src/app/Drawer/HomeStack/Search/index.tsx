@@ -59,6 +59,7 @@ export default function Search() {
                     <TextInput
                         placeholder="Search"
                         style={searchInput}
+                        placeholderTextColor={Colors.black}
                     />
                     <TouchableOpacity>
                         <Close />

@@ -8,5 +8,6 @@ export const Colors = {
   primary30: "#4F4F4F",
   drawerBGColor : '#747474',
   pink : '#FF2CC4',
-  gold : '#FF9D2C'
+  gold : '#FF9D2C',
+  black : '#000000'
 };
