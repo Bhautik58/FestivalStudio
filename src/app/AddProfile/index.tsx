@@ -12,12 +12,17 @@ import {
   SmsBox,
   Website,
 } from "../../assets";
+import useAddProfile from "./useAddProfile";
+
+//Component imports
 import {
   CustomInputField,
   HeaderBackground,
   KeyboardView,
 } from "../../components";
-import useAddProfile from "./useAddProfile";
+
+//Hooks imports
+import useFcm from "../../hooks/useFcm";
 
 const {
   container,
@@ -35,6 +40,7 @@ const {
 } = styles;
 
 const AddProfile = () => {
+  
   const {
     businessAddRef,
     businessEmailRef,
@@ -46,6 +52,10 @@ const AddProfile = () => {
     onEditSelectionPress,
     logoUri,
   } = useAddProfile();
+
+  const { token } = useFcm();
+  console.log(token, 'token')
+
   return (
     <View style={container}>
       <StatusBar barStyle={"light-content"} />
