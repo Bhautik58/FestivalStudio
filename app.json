@@ -16,7 +16,10 @@
     "ios": {
       "supportsTablet": true,
       "googleServicesFile": "./GoogleService-Info.plist",
-      "bundleIdentifier": "com.anonymous.FestivalStudio"
+      "bundleIdentifier": "com.anonymous.FestivalStudio",
+      "entitlements": {
+        "aps-environment": "production"
+      }
     },
     "android": {
       "adaptiveIcon": {
