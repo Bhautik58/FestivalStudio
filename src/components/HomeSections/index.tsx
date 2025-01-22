@@ -24,7 +24,7 @@ const HomeSections: FC<iHomeSections> = (props) => {
     //render list item of post
     const renderPostItems = ({ item }: any) => {
         return (
-            <TouchableOpacity style={postContainer}>
+            <TouchableOpacity style={postContainer} onPress={() => navigate("EditPoster/index")}>
                 <ImageBackground source={item.post_image} style={postImage} resizeMode="cover" imageStyle={{ borderRadius: Sizes._10 }} />
             </TouchableOpacity>
         )
