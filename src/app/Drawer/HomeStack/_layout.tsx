@@ -8,6 +8,7 @@ export default function HomeStackLayout() {
             <Stack.Screen name="Calendar/index" />
             <Stack.Screen name="Search/index" />
             <Stack.Screen name="Festivals/[id]" />
+            <Stack.Screen name="EditPoster/index" />
         </Stack>
     );
 }
