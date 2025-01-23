@@ -19,7 +19,7 @@ interface GlassEffectProps {
   borderColor?: string;
   borderWidth?: number;
 }
-const { blurView, container, gradient } = styles;
+const { blurView, gradient } = styles;
 const GlassEffect: React.FC<GlassEffectProps> = ({
   children,
   style,
@@ -32,7 +32,7 @@ const GlassEffect: React.FC<GlassEffectProps> = ({
   borderWidth = 0.5,
 }) => {
   return (
-    <View style={[container, style]}>
+    <View style={style}>
       <BlurView
         intensity={blurIntensity}
         tint={blurTint}

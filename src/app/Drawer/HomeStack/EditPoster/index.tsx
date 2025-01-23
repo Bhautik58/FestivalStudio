@@ -10,12 +10,14 @@ import { useNavigation } from "expo-router";
 import React, { useCallback, useRef, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
+import { FlashList } from "@shopify/flash-list";
 
 //File imports
 import styles from "./styles";
 import { Colors, Sizes } from "../../../../utils";
 import ChevronLeft from "../../../../assets/svgIcons/ChevronLeft";
 import {
+  Album,
   Asterisk,
   Close,
   Layers,
@@ -31,7 +33,11 @@ import {
 import { BottomSheetRefProps } from "../../../../components/BottomSheet";
 
 //Component imports
-import { BottomSheet, GlassContainer, HeaderBackground } from "../../../../components";
+import {
+  BottomSheet,
+  GlassContainer,
+  HeaderBackground,
+} from "../../../../components";
 
 const {
   container,
@@ -49,7 +55,16 @@ const {
   logoPickerContainer,
   imageRemoveButton,
   emptyView,
-  glassContainerStyle
+  glassContainerStyle,
+  backgroundImage,
+  backgroundImageCon,
+  bottomsheetTab,
+  sheetTab,
+  sheetTabBrown,
+  tabLable,
+  tabLableBrown,
+  backgroundPostsCon,
+  imagePickerItemCon,
 } = styles;
 
 const TABS = {
@@ -59,19 +74,28 @@ const TABS = {
   TEXT: "Text",
 };
 
+const SUB_TABS = [
+  { key: "Background", label: "Background" },
+  { key: "Colors", label: "Color" },
+];
+
 export default function EditPoster() {
   const ref = useRef<BottomSheetRefProps>(null);
+  const backgroundListRef = useRef<FlashList<any>>(null);
   const { goBack } = useNavigation();
   const { bottom } = useSafeAreaInsets();
   const [selectedTab, setSelectedTab] = useState(TABS.LOGO);
   const [selectedImages, setSelectedImages] = useState<any[]>([]);
+  const [selectedSheetTab, setSelectedSheetTab] = useState("Background");
+  const SNAP_VALUE = 400;
 
   const onBackgroundTabPress = useCallback(() => {
     const isActive = ref?.current?.isActive();
     if (isActive) {
       ref?.current?.scrollTo(0);
+      backgroundListRef?.current?.scrollToIndex({ animated: true, index: 0 });
     } else {
-      ref?.current?.scrollTo(-Sizes.FindSize(400));
+      ref?.current?.scrollTo(-Sizes.FindSize(SNAP_VALUE));
     }
   }, []);
 
@@ -138,7 +162,7 @@ export default function EditPoster() {
               style={tabItemContainer}
               hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
               onPress={() => {
-                setSelectedTab(tab.id)
+                setSelectedTab(tab.id);
                 if (tab.id === TABS.BACKGROUND) {
                   onBackgroundTabPress();
                 }
@@ -194,6 +218,20 @@ export default function EditPoster() {
     });
   };
 
+  const BackgroundItem = ({ item, index }: any) => {
+    return (
+      <TouchableOpacity key={`bgitem=${index}`} style={backgroundImageCon}>
+        <Image
+          source={{
+            uri:
+              item?.uri ??
+              "https://cdn.vectorstock.com/i/1000x1000/70/42/happy-diwali-poster-with-decorative-lantern-vector-44017042.webp",
+          }}
+          style={backgroundImage}
+        />
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={container}>
@@ -207,8 +245,7 @@ export default function EditPoster() {
           <Layers />
         </TouchableOpacity>
         {true ? (
-          <View style={postImageContainer}>
-            </View>
+          <View style={postImageContainer}></View>
         ) : (
           <ImageBackground
             style={postImageContainer}
@@ -247,12 +284,101 @@ export default function EditPoster() {
             })}
           </View>
         ) : (
-          <View style={emptyView}/>
+          <View style={emptyView} />
         )}
       </View>
       <BottomSheet ref={ref}>
         <View style={glassContainerStyle}>
-          <GlassContainer />
+          <GlassContainer>
+            <View style={bottomsheetTab}>
+              {SUB_TABS.map((tab) => (
+                <TouchableOpacity
+                  key={tab.key}
+                  style={[
+                    sheetTab,
+                    selectedSheetTab === tab.key && sheetTabBrown,
+                  ]}
+                  onPress={() => {
+                    backgroundListRef?.current?.scrollToIndex({
+                      animated: true,
+                      index: 0,
+                    });
+                    setSelectedSheetTab(tab.key);
+                  }}
+                >
+                  <Text
+                    style={[
+                      tabLable,
+                      selectedSheetTab === tab.key && tabLableBrown,
+                    ]}
+                  >
+                    {tab.label}
+                  </Text>
+                </TouchableOpacity>
+              ))}
+            </View>
+            <FlashList
+              ref={backgroundListRef}
+              data={[
+                { key: "header", isHeader: true },
+                { key: "1" },
+                { key: "2" },
+                { key: "3" },
+                { key: "4" },
+                { key: "5" },
+                { key: "6" },
+                { key: "7" },
+                { key: "8" },
+                { key: "9" },
+                { key: "10" },
+                { key: "11" },
+                { key: "12" },
+                { key: "13" },
+                { key: "14" },
+                { key: "15" },
+                { key: "16" },
+                { key: "17" },
+                { key: "18" },
+                { key: "19" },
+                { key: "20" },
+              ]}
+              numColumns={4}
+              showsVerticalScrollIndicator
+              indicatorStyle="white"
+              contentContainerStyle={backgroundPostsCon}
+              keyExtractor={(item) => item.key}
+              ListFooterComponent={<View style={{ height: SNAP_VALUE + 50 }} />}
+              renderItem={({ item }) => {
+                if (selectedSheetTab === SUB_TABS[0].key) {
+                  if (item.isHeader) {
+                    return (
+                      <TouchableOpacity
+                        activeOpacity={0.8}
+                        style={[backgroundImageCon, imagePickerItemCon]}
+                      >
+                        <Album />
+                      </TouchableOpacity>
+                    );
+                  }
+                  return <BackgroundItem item={item} />;
+                } else {
+                  return (
+                    <TouchableOpacity
+                      activeOpacity={0.8}
+                      style={[
+                        backgroundImageCon,
+                        {
+                          backgroundColor:
+                            "#" +
+                            ((Math.random() * 0xffffff) << 0).toString(16),
+                        },
+                      ]}
+                    />
+                  );
+                }
+              }}
+            />
+          </GlassContainer>
         </View>
       </BottomSheet>
       <Footer />
