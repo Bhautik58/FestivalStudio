@@ -90,5 +90,25 @@ export default StyleSheet.create({
         alignItems: "center",
         zIndex: 1,
       },
-      
+      emptyView:{
+        height: Sizes.FindSize(120),
+        width: Sizes._20,
+      },
+      wrapper: {
+        height:'100%',
+        width: "100%",
+        backgroundColor: Colors.primary20,
+      },
+      innerShadow: {
+        flex: 1,
+        justifyContent:'flex-end',
+      },
+      content: {
+        height: Sizes._50,
+        alignItems: "center",
+        justifyContent: "center",
+      },
+      glassContainerStyle:{ flex: 1 , backgroundColor:'rgba(100,100,100,0.4)',borderRadius:Sizes._25 , borderWidth:0.5,
+        borderColor:'#D9D9D9',
+    }
 })

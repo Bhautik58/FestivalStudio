@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import { useNavigation } from "expo-router";
-import React, { useState } from "react";
+import React, { useCallback, useRef, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 
@@ -28,9 +28,10 @@ import {
   TextIcon,
   Tick,
 } from "../../../../assets";
+import { BottomSheetRefProps } from "../../../../components/BottomSheet";
 
 //Component imports
-import { HeaderBackground } from "../../../../components";
+import { BottomSheet, GlassContainer, HeaderBackground } from "../../../../components";
 
 const {
   container,
@@ -46,23 +47,34 @@ const {
   layerButtonContainer,
   imageSelectorContainer,
   logoPickerContainer,
-  imageRemoveButton
+  imageRemoveButton,
+  emptyView,
+  glassContainerStyle
 } = styles;
 
 const TABS = {
-    LOGO: "Logo",
-    BACKGROUND: "Background",
-    STICKER: "Sticker",
-    TEXT: "Text",
+  LOGO: "Logo",
+  BACKGROUND: "Background",
+  STICKER: "Sticker",
+  TEXT: "Text",
 };
 
 export default function EditPoster() {
+  const ref = useRef<BottomSheetRefProps>(null);
   const { goBack } = useNavigation();
   const { bottom } = useSafeAreaInsets();
   const [selectedTab, setSelectedTab] = useState(TABS.LOGO);
   const [selectedImages, setSelectedImages] = useState<any[]>([]);
 
-  
+  const onBackgroundTabPress = useCallback(() => {
+    const isActive = ref?.current?.isActive();
+    if (isActive) {
+      ref?.current?.scrollTo(0);
+    } else {
+      ref?.current?.scrollTo(-Sizes.FindSize(400));
+    }
+  }, []);
+
   const Header = React.memo(() => {
     return (
       <HeaderBackground>
@@ -110,11 +122,11 @@ export default function EditPoster() {
 
   const Footer = React.memo(() => {
     const tabs = [
-        { id: TABS.LOGO, icon: <Asterisk />, label: TABS.LOGO },
-        { id: TABS.BACKGROUND, icon: <Picture />, label: TABS.BACKGROUND },
-        { id: TABS.STICKER, icon: <Sticker />, label: TABS.STICKER },
-        { id: TABS.TEXT, icon: <TextIcon />, label: TABS.TEXT },
-      ];
+      { id: TABS.LOGO, icon: <Asterisk />, label: TABS.LOGO },
+      { id: TABS.BACKGROUND, icon: <Picture />, label: TABS.BACKGROUND },
+      { id: TABS.STICKER, icon: <Sticker />, label: TABS.STICKER },
+      { id: TABS.TEXT, icon: <TextIcon />, label: TABS.TEXT },
+    ];
     return (
       <HeaderBackground>
         <View
@@ -125,7 +137,12 @@ export default function EditPoster() {
               key={tab.id}
               style={tabItemContainer}
               hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
-              onPress={() => setSelectedTab(tab.id)}
+              onPress={() => {
+                setSelectedTab(tab.id)
+                if (tab.id === TABS.BACKGROUND) {
+                  onBackgroundTabPress();
+                }
+              }}
             >
               {React.cloneElement(tab.icon, {
                 fill: selectedTab === tab.id ? Colors.primary : Colors.white,
@@ -154,14 +171,14 @@ export default function EditPoster() {
       alert("Permission to access media library is required!");
       return;
     }
-  
+
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
       aspect: [1, 1],
       quality: 1,
     });
-  
+
     if (!result.canceled) {
       const updatedImages = [...selectedImages];
       updatedImages[index] = result.assets[0].uri;
@@ -190,7 +207,8 @@ export default function EditPoster() {
           <Layers />
         </TouchableOpacity>
         {true ? (
-          <View style={postImageContainer} />
+          <View style={postImageContainer}>
+            </View>
         ) : (
           <ImageBackground
             style={postImageContainer}
@@ -199,40 +217,44 @@ export default function EditPoster() {
             }}
           ></ImageBackground>
         )}
-
         {selectedTab === TABS.LOGO ? (
           <View style={[row, logoPickerContainer]}>
             {[1, 2, 3, 4].map((item, index) => {
-            const uri = selectedImages[index];
-            return (
-              <View key={`logo=${index}`} style={imageSelectorContainer}>
-                {uri ? (
-                  <>
-                    <Image source={{ uri }} style={postImage} />
+              const uri = selectedImages[index];
+              return (
+                <View key={`logo=${index}`} style={imageSelectorContainer}>
+                  {uri ? (
+                    <>
+                      <Image source={{ uri }} style={postImage} />
+                      <TouchableOpacity
+                        activeOpacity={0.7}
+                        style={imageRemoveButton}
+                        onPress={() => removeImage(index)}
+                      >
+                        <Close />
+                      </TouchableOpacity>
+                    </>
+                  ) : (
                     <TouchableOpacity
                       activeOpacity={0.7}
-                      style={imageRemoveButton}
-                      onPress={() => removeImage(index)}
+                      onPress={() => handleSelectImage(index)}
                     >
-                      <Close/>
+                      <PlusIcon />
                     </TouchableOpacity>
-                  </>
-                ) : (
-                  <TouchableOpacity
-                    activeOpacity={0.7}
-                    onPress={() => handleSelectImage(index)}
-                  >
-                    <PlusIcon />
-                  </TouchableOpacity>
-                )}
-              </View>
-            );
-          })}
+                  )}
+                </View>
+              );
+            })}
           </View>
         ) : (
-          <View />
+          <View style={emptyView}/>
         )}
       </View>
+      <BottomSheet ref={ref}>
+        <View style={glassContainerStyle}>
+          <GlassContainer />
+        </View>
+      </BottomSheet>
       <Footer />
     </View>
   );
