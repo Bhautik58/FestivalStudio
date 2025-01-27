@@ -9,5 +9,6 @@ export const Images = {
     headerBg : require('./header_bg.png'),
     post1 : require('./post1.png'),
     post2 : require('./post2.png'),
-    homeBanner : require('./homeBanner.png')
+    homeBanner : require('./homeBanner.png'),
+    ColorPickerIcon : require('./ColorPicker.png')
 }

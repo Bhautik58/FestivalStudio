@@ -1,9 +1,11 @@
 //Global imports
-import { StyleSheet } from "react-native";
+import { Dimensions, StyleSheet } from "react-native";
 
 //File imports
 import { Colors, Sizes } from "../../../../utils";
 import { Fonts } from "../../../../assets";
+
+const { width } = Dimensions.get("window");
 
 export default StyleSheet.create({
   container: {
@@ -149,6 +151,37 @@ export default StyleSheet.create({
   },
   backgroundPostsCon: {
     paddingHorizontal: Sizes._16,
-    paddingBottom: 100,
+    paddingBottom: Sizes.FindSize(100),
   },
+  modalBackground: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "rgba(0, 0, 0, 0.5)",
+  },
+  modalContainer: {
+    width: width - Sizes._40,
+    backgroundColor: "white",
+    borderRadius: Sizes._10,
+    padding: Sizes._20,
+    justifyContent: "center",
+    alignItems: "center",
+    elevation: Sizes._20,
+  },
+  header: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: Sizes._20,
+  },
+  title: {
+    fontSize: Sizes._20,
+    fontFamily:Fonts.K2D_Bold
+  },
+  confirmButtonText:{
+    fontSize:Sizes._18,
+    fontFamily:Fonts.K2D_Bold,
+    color:Colors.blue
+  }
 });

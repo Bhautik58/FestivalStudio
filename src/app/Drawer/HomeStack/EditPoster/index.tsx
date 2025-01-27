@@ -1,7 +1,10 @@
 //Global imports
 import {
+  Dimensions,
   Image,
   ImageBackground,
+  Modal,
+  Pressable,
   Text,
   TouchableOpacity,
   View,
@@ -11,6 +14,7 @@ import React, { useCallback, useRef, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 import { FlashList } from "@shopify/flash-list";
+import ColorPicker from "react-native-wheel-color-picker";
 
 //File imports
 import styles from "./styles";
@@ -20,6 +24,7 @@ import {
   Album,
   Asterisk,
   Close,
+  Images,
   Layers,
   Picture,
   PlusIcon,
@@ -65,6 +70,11 @@ const {
   tabLableBrown,
   backgroundPostsCon,
   imagePickerItemCon,
+  header,
+  modalBackground,
+  modalContainer,
+  title,
+  confirmButtonText,
 } = styles;
 
 const TABS = {
@@ -78,6 +88,7 @@ const SUB_TABS = [
   { key: "Background", label: "Background" },
   { key: "Colors", label: "Color" },
 ];
+const { height } = Dimensions.get("window");
 
 export default function EditPoster() {
   const ref = useRef<BottomSheetRefProps>(null);
@@ -86,7 +97,13 @@ export default function EditPoster() {
   const { bottom } = useSafeAreaInsets();
   const [selectedTab, setSelectedTab] = useState(TABS.LOGO);
   const [selectedImages, setSelectedImages] = useState<any[]>([]);
-  const [selectedSheetTab, setSelectedSheetTab] = useState("Background");
+  const [selectedSheetTab, setSelectedSheetTab] = useState<number | string>(
+    "Background"
+  );
+  const [isColorPickerVisible, setIsColorPickerVisible] =
+    useState<boolean>(false);
+  const [selectedBgImage, setSelectedBgImage] = useState<string | null>(null);
+  const [color, setColor] = useState<string>(Colors.white);
   const SNAP_VALUE = 400;
 
   const onBackgroundTabPress = useCallback(() => {
@@ -98,6 +115,15 @@ export default function EditPoster() {
       ref?.current?.scrollTo(-Sizes.FindSize(SNAP_VALUE));
     }
   }, []);
+
+  const handleColorPickerPress = () => {
+    setIsColorPickerVisible(true);
+  };
+
+  const closeModal = () => {
+    setIsColorPickerVisible(false);
+    onBackgroundTabPress();
+  };
 
   const Header = React.memo(() => {
     return (
@@ -165,6 +191,10 @@ export default function EditPoster() {
                 setSelectedTab(tab.id);
                 if (tab.id === TABS.BACKGROUND) {
                   onBackgroundTabPress();
+                } else {
+                  if (ref?.current?.isActive()) {
+                    onBackgroundTabPress();
+                  }
                 }
               }}
             >
@@ -218,9 +248,29 @@ export default function EditPoster() {
     });
   };
 
+  const onColorChange = (color: any) => {
+    setSelectedBgImage(null);
+    setColor(color);
+  };
+
+  const onStaticColorSelection = (color: string) => {
+    setSelectedBgImage(null);
+    setColor(color);
+    onBackgroundTabPress();
+  };
+
+  const onBgItemPress = (url: string) => {
+    setSelectedBgImage(url);
+    onBackgroundTabPress();
+  };
+
   const BackgroundItem = ({ item, index }: any) => {
     return (
-      <TouchableOpacity key={`bgitem=${index}`} style={backgroundImageCon}>
+      <TouchableOpacity
+        key={`bgitem=${index}`}
+        style={backgroundImageCon}
+        onPress={() => onBgItemPress(item?.color)}
+      >
         <Image
           source={{
             uri:
@@ -244,15 +294,15 @@ export default function EditPoster() {
         >
           <Layers />
         </TouchableOpacity>
-        {true ? (
-          <View style={postImageContainer}></View>
-        ) : (
+        {selectedBgImage != null ? (
           <ImageBackground
-            style={postImageContainer}
+            style={[postImageContainer]}
             source={{
-              uri: "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAQwAAACUCAMAAABREOc7AAAAIVBMVEX///////3+/+////P//vn+/+3///X//+v+//H///f//ej+884zAAABt0lEQVR4nO3X4W6DMAxGUZKQNPT9H3iO41DawSpVEDp0zy/EjGS+GvCG4d9zahynoNLoXD3/V/0o9dOURMje39S9X8+HaVmkIPcVSxoShxvcehhWLDnU7LJcc7teGHJnPsbow5zHauk41uA0CS+ihnEX/XvfXZt6C0PTKA/LemHSkcg+Z8uiXHOpMNqvrZNRhPA7DK0rRZJBvMXYajUOnY4zut/ZIoxsd5dXwrAoQo42C488Ys0jntL+viyM8gCU6S/3llcek1LVnqRYk7BBimVW5Nif0v7+6mzIcGT1+L4ua+SFEfxCtvenhFEPz+j8ADYdEsbLsvFcJG/ZbHEF3TGCxqBnJJYTGj+CfV7tixnStPIxGWw46t8rXbtSWzh6d32QxeJlWWyE4criOeka0jZRi0Qu6931QeYVW24qycq1HUYpcy/kjGbUu+vDzMvlpM/A5jI+PPb09j/MnGSnVnuo9zT/3BtFT/XLY0nj4AY7e5PEmysvFsbnPovwqgjjGWEAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAPBVfgBeBQqg2NqFDAAAAABJRU5ErkJggg==",
+              uri: selectedBgImage,
             }}
           ></ImageBackground>
+        ) : (
+          <View style={[postImageContainer, { backgroundColor: color }]}></View>
         )}
         {selectedTab === TABS.LOGO ? (
           <View style={[row, logoPickerContainer]}>
@@ -321,26 +371,36 @@ export default function EditPoster() {
               ref={backgroundListRef}
               data={[
                 { key: "header", isHeader: true },
-                { key: "1" },
-                { key: "2" },
-                { key: "3" },
-                { key: "4" },
-                { key: "5" },
-                { key: "6" },
-                { key: "7" },
-                { key: "8" },
-                { key: "9" },
-                { key: "10" },
-                { key: "11" },
-                { key: "12" },
-                { key: "13" },
-                { key: "14" },
-                { key: "15" },
-                { key: "16" },
-                { key: "17" },
-                { key: "18" },
-                { key: "19" },
-                { key: "20" },
+                { key: "1", color: "#FF5733" },
+                { key: "2", color: "#FFC300" },
+                { key: "3", color: "#DAF7A6" },
+                { key: "4", color: "#C70039" },
+                { key: "5", color: "#900C3F" },
+                { key: "6", color: "#581845" },
+                { key: "7", color: "#4CAF50" },
+                { key: "8", color: "#2196F3" },
+                { key: "9", color: "#03A9F4" },
+                { key: "10", color: "#00BCD4" },
+                { key: "11", color: "#009688" },
+                { key: "12", color: "#FF9800" },
+                { key: "13", color: "#F44336" },
+                { key: "14", color: "#E91E63" },
+                { key: "15", color: "#9C27B0" },
+                { key: "16", color: "#673AB7" },
+                { key: "17", color: "#3F51B5" },
+                { key: "18", color: "#8BC34A" },
+                { key: "19", color: "#CDDC39" },
+                { key: "20", color: "#FFEB3B" },
+                { key: "21", color: "#FFC107" },
+                { key: "22", color: "#FF5722" },
+                { key: "23", color: "#795548" },
+                { key: "24", color: "#9E9E9E" },
+                { key: "25", color: "#607D8B" },
+                { key: "26", color: "#FFFFFF" },
+                { key: "27", color: "#F5F5F5" },
+                { key: "28", color: "#EEEEEE" },
+                { key: "29", color: "#000000" },
+                { key: "30", color: "#424242" },
               ]}
               numColumns={4}
               showsVerticalScrollIndicator
@@ -362,15 +422,28 @@ export default function EditPoster() {
                   }
                   return <BackgroundItem item={item} />;
                 } else {
+                  if (item.isHeader) {
+                    return (
+                      <TouchableOpacity
+                        activeOpacity={0.8}
+                        onPress={handleColorPickerPress}
+                      >
+                        <Image
+                          source={Images.ColorPickerIcon}
+                          resizeMode="contain"
+                          style={backgroundImageCon}
+                        />
+                      </TouchableOpacity>
+                    );
+                  }
                   return (
                     <TouchableOpacity
                       activeOpacity={0.8}
+                      onPress={() => onStaticColorSelection(item.color)}
                       style={[
                         backgroundImageCon,
                         {
-                          backgroundColor:
-                            "#" +
-                            ((Math.random() * 0xffffff) << 0).toString(16),
+                          backgroundColor: item.color,
                         },
                       ]}
                     />
@@ -381,6 +454,35 @@ export default function EditPoster() {
           </GlassContainer>
         </View>
       </BottomSheet>
+      <Modal
+        visible={isColorPickerVisible}
+        transparent={true}
+        animationType="slide"
+        onRequestClose={closeModal}
+      >
+        <Pressable style={modalBackground} onPressOut={closeModal}>
+          <View
+            style={[modalContainer, { height: height / 2 + 50 }]}
+            onStartShouldSetResponder={(e) => true}
+            onResponderTerminationRequest={() => false}
+          >
+            <View style={header}>
+              <Text style={title}>Pick a Color</Text>
+              <Pressable onPress={closeModal}>
+                <Text style={[confirmButtonText]}>Confirm</Text>
+              </Pressable>
+            </View>
+            <ColorPicker
+              color={color}
+              onColorChangeComplete={(color) => onColorChange(color)}
+              thumbSize={30}
+              sliderSize={30}
+              noSnap={true}
+              row={false}
+            />
+          </View>
+        </Pressable>
+      </Modal>
       <Footer />
     </View>
   );
