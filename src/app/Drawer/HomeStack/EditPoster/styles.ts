@@ -153,12 +153,6 @@ export default StyleSheet.create({
     paddingHorizontal: Sizes._16,
     paddingBottom: Sizes.FindSize(100),
   },
-  modalBackground: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    backgroundColor: "rgba(0, 0, 0, 0.5)",
-  },
   modalContainer: {
     width: width - Sizes._40,
     backgroundColor: "white",
@@ -183,5 +177,51 @@ export default StyleSheet.create({
     fontSize:Sizes._18,
     fontFamily:Fonts.K2D_Bold,
     color:Colors.blue
-  }
+  },
+  modalBackground: {
+    flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
+    justifyContent: "flex-end",
+  },
+  glassTextContainer: {
+    position: "absolute",
+    left: 0,
+    right: 0,
+    marginHorizontal: Sizes._12,
+    backgroundColor: "rgba(100,100,100,0.1)",
+    borderRadius: Sizes._10,
+  },
+  textInputLabel: {
+    fontSize: Sizes._18,
+    fontFamily: Fonts.K2D_SemiBold,
+    color: Colors.white,
+    marginBottom: Sizes._8,
+  },
+  textInputStyle: {
+    color: Colors.white,
+    fontSize: Sizes._15,
+    fontFamily: Fonts.K2D_Medium,
+    paddingVertical: Sizes.FindSize(15),
+    paddingHorizontal: Sizes._10,
+    borderColor: Colors.white,
+    borderWidth: Sizes.FindSize(1),
+  },
+  textInputContainer: {
+    margin: Sizes.FindSize(12),
+  },
+  textInputButtons: {
+    flexDirection: "row",
+    justifyContent: "flex-end",
+    marginRight: 12,
+    paddingTop:Sizes._5,
+    paddingBottom: Sizes._15,
+
+  },
+  keyboardAvoidingContainer: {
+    flex: 1,
+  },
+  scrollViewContent: {
+    flexGrow: 1,
+    justifyContent: "flex-end",
+  },
 });

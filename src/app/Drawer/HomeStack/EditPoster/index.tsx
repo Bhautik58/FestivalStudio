@@ -3,14 +3,20 @@ import {
   Dimensions,
   Image,
   ImageBackground,
+  Keyboard,
+  KeyboardAvoidingView,
   Modal,
+  Platform,
   Pressable,
+  ScrollView,
   Text,
+  TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   View,
 } from "react-native";
 import { useNavigation } from "expo-router";
-import React, { useCallback, useRef, useState } from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as ImagePicker from "expo-image-picker";
 import { FlashList } from "@shopify/flash-list";
@@ -18,7 +24,7 @@ import ColorPicker from "react-native-wheel-color-picker";
 
 //File imports
 import styles from "./styles";
-import { Colors, Sizes } from "../../../../utils";
+import { Colors, selectImageFromLibrary, Sizes } from "../../../../utils";
 import ChevronLeft from "../../../../assets/svgIcons/ChevronLeft";
 import {
   Album,
@@ -42,6 +48,7 @@ import {
   BottomSheet,
   GlassContainer,
   HeaderBackground,
+  SmallButton,
 } from "../../../../components";
 
 const {
@@ -75,6 +82,13 @@ const {
   modalContainer,
   title,
   confirmButtonText,
+  glassTextContainer,
+  textInputStyle,
+  textInputLabel,
+  textInputButtons,
+  textInputContainer,
+  keyboardAvoidingContainer,
+  scrollViewContent,
 } = styles;
 
 const TABS = {
@@ -104,6 +118,9 @@ export default function EditPoster() {
     useState<boolean>(false);
   const [selectedBgImage, setSelectedBgImage] = useState<string | null>(null);
   const [color, setColor] = useState<string>(Colors.white);
+  const [isTextInputVisible, setIsTextInputVisible] = useState<boolean>(false);
+  const [keyboardOffset, setKeyboardOffset] = useState<number>(Sizes.FindSize(110));
+
   const SNAP_VALUE = 400;
 
   const onBackgroundTabPress = useCallback(() => {
@@ -115,6 +132,15 @@ export default function EditPoster() {
       ref?.current?.scrollTo(-Sizes.FindSize(SNAP_VALUE));
     }
   }, []);
+
+  const handleTextInputVisibility = useCallback(() => {
+    setIsTextInputVisible(false);
+  }, []);
+
+  const onAddTextPress = useCallback(() => {
+    alert('Pending Functionality')
+    handleTextInputVisibility()
+  }, [handleTextInputVisibility]);
 
   const handleColorPickerPress = () => {
     setIsColorPickerVisible(true);
@@ -189,6 +215,13 @@ export default function EditPoster() {
               hitSlop={{ top: 15, bottom: 15, left: 15, right: 15 }}
               onPress={() => {
                 setSelectedTab(tab.id);
+                if (tab.id === TABS.TEXT) {
+                  if (isTextInputVisible) {
+                    setIsTextInputVisible(false);
+                  } else {
+                    setIsTextInputVisible(true);
+                  }
+                }
                 if (tab.id === TABS.BACKGROUND) {
                   onBackgroundTabPress();
                 } else {
@@ -264,6 +297,13 @@ export default function EditPoster() {
     onBackgroundTabPress();
   };
 
+  const onAlbumItemPress = async () => {
+    const result = await selectImageFromLibrary();
+    if (result?.uri) {
+      setSelectedBgImage(result?.uri);
+    }
+    onBackgroundTabPress();
+  };
   const BackgroundItem = ({ item, index }: any) => {
     return (
       <TouchableOpacity
@@ -282,6 +322,29 @@ export default function EditPoster() {
       </TouchableOpacity>
     );
   };
+
+  useEffect(() => {
+    const keyboardShowEvent =
+      Platform.OS === "ios" ? "keyboardWillShow" : "keyboardDidShow";
+    const keyboardHideEvent =
+      Platform.OS === "ios" ? "keyboardWillHide" : "keyboardDidHide";
+
+    const keyboardShowListener = Keyboard.addListener(
+      keyboardShowEvent,
+      (event) => {
+        setKeyboardOffset(0);
+      }
+    );
+
+    const keyboardHideListener = Keyboard.addListener(keyboardHideEvent, () => {
+      setKeyboardOffset(Sizes.FindSize(110));
+    });
+
+    return () => {
+      keyboardShowListener.remove();
+      keyboardHideListener.remove();
+    };
+  }, []);
 
   return (
     <View style={container}>
@@ -337,6 +400,55 @@ export default function EditPoster() {
           <View style={emptyView} />
         )}
       </View>
+      {isTextInputVisible && (
+        <Modal visible={isTextInputVisible} transparent animationType="fade">
+          <TouchableWithoutFeedback onPress={handleTextInputVisibility}>
+            <View style={modalBackground}>
+              <KeyboardAvoidingView
+                behavior={Platform.OS === "ios" ? "padding" : "height"}
+                style={keyboardAvoidingContainer}
+              >
+                <ScrollView
+                  contentContainerStyle={scrollViewContent}
+                  keyboardShouldPersistTaps="handled"
+                >
+                  <View
+                    style={[glassTextContainer, { bottom: keyboardOffset }]}
+                  >
+                    <GlassContainer borderRadius={Sizes._10} borderWidth={0}>
+                      <View style={textInputContainer}>
+                        <Text style={textInputLabel}>Add Text</Text>
+                        <TextInput
+                          autoCapitalize="none"
+                          autoCorrect={false}
+                          multiline={true}
+                          placeholder={"Enter Text"}
+                          style={textInputStyle}
+                          placeholderTextColor={Colors.white}
+                        />
+                      </View>
+                      <View style={textInputButtons}>
+                        <SmallButton
+                          label="Cancel"
+                          isBoarder
+                          style={{ marginHorizontal: Sizes._7 }}
+                          onPress={handleTextInputVisibility}
+                        />
+                        <SmallButton
+                          label="Add"
+                          style={{ marginHorizontal: Sizes._7 }}
+                          onPress={onAddTextPress}
+                        />
+                      </View>
+                    </GlassContainer>
+                  </View>
+                </ScrollView>
+              </KeyboardAvoidingView>
+            </View>
+          </TouchableWithoutFeedback>
+        </Modal>
+      )}
+
       <BottomSheet ref={ref}>
         <View style={glassContainerStyle}>
           <GlassContainer>
@@ -414,6 +526,7 @@ export default function EditPoster() {
                     return (
                       <TouchableOpacity
                         activeOpacity={0.8}
+                        onPress={onAlbumItemPress}
                         style={[backgroundImageCon, imagePickerItemCon]}
                       >
                         <Album />
