@@ -5,3 +5,6 @@ export { default as Image } from "./Image";
 export { default as KeyboardView } from "./KeyboardView";
 export { default as CustomDrawer } from "./CustomDrawer";
 export { default as HomeSections } from "./HomeSections";
+export { default as BottomSheet} from "./BottomSheet";
+export { default as GlassContainer} from "./GlassContainer";
+export { default as SmallButton} from "./SmallButton";

@@ -25,3 +25,4 @@ export { default as Sticker } from "./Sticker";
 export { default as Picture } from "./Picture";
 export { default as PlusIcon } from "./PlusIcon";
 export { default as Close } from "./Close";
+export { default as Album } from "./Album";
